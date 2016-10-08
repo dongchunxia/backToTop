@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JavaScript实现回到顶部效果</title>
+	<style>
+		.content{
+			width: 1190px;
+			margin: 0 auto;
+		}
+		#btn{
+			width: 40px;
+			height: 40px;
+			position: fixed;
+			left: 50%;
+			bottom: 30px;
+			margin-left: 615px;
+			background: url(images/top_bg.png) left top no-repeat;
+			display: none;
+		}
+		#btn:hover{
+			background: url(images/top_bg.png) left bottom no-repeat;
+		}
+	</style>
+</head>
+<body>
+	<div class="content">
+		<img src="images/tb_bg.jpg">
+	</div>
+	<a href="javascript:;" id="btn" title="回到顶部"></a>
+</body>
+	<script>
+		window.onload=function(){
+			var obtn=document.getElementById("btn");
+			var timer=null;
+			var isTop;
+
+			obtn.onclick=function(){
+				timer=setInterval(function(){
+					var disTop=document.documentElement.scrollTop || document.body.scrollTop;
+					var speed=Math.floor(-disTop/6);
+					document.documentElement.scrollTop=document.body.scrollTop=disTop+speed;
+					isTop=true;
+					if (disTop==0) {
+						clearInterval(timer);
+					}
+					// console.log(disTop);
+				},30)
+			}
+
+			window.onscroll=function(){
+				var disTop=document.documentElement.scrollTop || document.body.scrollTop;
+				var clientHeight=document.documentElement.clientHeight;
+				if (disTop>=clientHeight) {
+					obtn.style.display="block";
+				}else{
+					obtn.style.display="none";
+				}
+				if (!isTop) {
+					clearInterval(timer);
+				}
+				isTop=false;
+			}
+		}
+
+		//阚小强教给我的另外一种性能更好的方法
+		// window.onload=function(){
+		// 	var obtn=document.getElementById('btn');
+		// 	var timer;
+
+		// 	obtn.onclick=function(e){
+		// 		e.stopPropagation();
+		// 		e.preventDefault();
+		// 		timer=setInterval(function(){
+		// 			var disTop=document.documentElement.scrollTop || document.body.scrollTop;
+		// 			var speed=Math.floor(-disTop/5);
+		// 			document.documentElement.scrollTop=document.body.scrollTop=disTop+speed;
+		// 			if (disTop==0) {
+		// 				clearInterval(timer);
+		// 			}
+		// 		},30)
+		// 	}
+		// 	window.onclick=function(){
+		// 		clearInterval(timer);
+		// 	}
+		// }
+	</script>
+</html>
